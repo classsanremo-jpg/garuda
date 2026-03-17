@@ -11,11 +11,6 @@ def load_api_keys():
 
 ALL_ACCOUNTS = load_api_keys()
 
-"""
-==============================================================================
-MOLTY ROYALE BOT - CONFIGURATION
-==============================================================================
-"""
 API_KEY = ALL_ACCOUNTS[0][0] if ALL_ACCOUNTS else os.environ.get("API_KEY", "")
 BASE_URL = os.environ.get("BASE_URL", "https://cdn.moltyroyale.com/api")
 WALLET_ADDRESS = ALL_ACCOUNTS[0][1] if ALL_ACCOUNTS else os.environ.get("WALLET_ADDRESS", "")
@@ -27,4 +22,20 @@ HP_LOW = 45
 EP_MIN_ATTACK = 2
 EP_REST_THRESHOLD = 3
 WIN_PROBABILITY_ATTACK = 0.65
-WIN
+WIN_PROBABILITY_AGGRESSIVE = 0.80
+LEARNING_ENABLED = True
+DATA_DIR = "data"
+MIN_GAMES_FOR_ML = 5
+LEARNING_RATE = 0.1
+REDIS_ENABLED = False
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
+LOG_LEVEL = "DEBUG"
+LOG_TO_FILE = True
+LOG_FILE = "logs/bot.log"
+TURN_INTERVAL = 60
+POLL_INTERVAL_WAITING = 5
+POLL_INTERVAL_DEAD = 60
+ROOM_HUNT_INTERVAL = 2
+HEARTBEAT_INTERVAL = 300
