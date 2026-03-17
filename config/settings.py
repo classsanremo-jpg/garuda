@@ -1,3 +1,4 @@
+import os
 import json
 
 # Multi-bot support — baca dari accounts_db.json
@@ -10,8 +11,6 @@ def load_api_keys():
     return [(os.environ.get("API_KEY", ""), os.environ.get("WALLET_ADDRESS", ""))]
 
 ALL_ACCOUNTS = load_api_keys()
-import os
-
 """
 ==============================================================================
 MOLTY ROYALE BOT - CONFIGURATION
