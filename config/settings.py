@@ -1,3 +1,15 @@
+import json
+
+# Multi-bot support — baca dari accounts_db.json
+def load_api_keys():
+    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "accounts_db.json")
+    if os.path.exists(db_path):
+        with open(db_path, "r") as f:
+            db = json.load(f)
+        return [(acc["apiKey"], acc.get("walletAddress", "")) for acc in db.get("accounts", [])]
+    return [(os.environ.get("API_KEY", ""), os.environ.get("WALLET_ADDRESS", ""))]
+
+ALL_ACCOUNTS = load_api_keys()
 import os
 
 """
