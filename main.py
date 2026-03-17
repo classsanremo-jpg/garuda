@@ -1035,5 +1035,30 @@ class GameLoop:
 # =============================================================================
 
 if __name__ == "__main__":
-    bot = GameLoop()
-    bot.run()
+    import threading
+    from config.settings import ALL_ACCOUNTS
+
+    if len(ALL_ACCOUNTS) <= 1:
+        # Single bot mode (seperti sebelumnya)
+        bot = GameLoop()
+        bot.run()
+    else:
+        # Multi-bot mode — jalankan semua akun paralel
+        print(f"🚀 Starting {len(ALL_ACCOUNTS)} bots in parallel...")
+        threads = []
+        for i, (api_key, wallet) in enumerate(ALL_ACCOUNTS):
+            import config.settings as cfg
+            cfg.API_KEY = api_key
+            cfg.WALLET_ADDRESS = wallet
+
+            bot = GameLoop()
+            t = threading.Thread(target=bot.run, name=f"Bot-{i+1}", daemon=True)
+            threads.append(t)
+
+        for t in threads:
+            t.start()
+            import time
+            time.sleep(2)  # Jeda 2 detik antar bot agar tidak bentrok
+
+        for t in threads:
+            t.join()
