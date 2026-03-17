@@ -103,9 +103,9 @@ class APIClient:
         response = self.get("/accounts/me")
         return response.get("data") or response
 
-def set_wallet(self, wallet_address: str) -> Dict:
-    response = self.put("/accounts/wallet", json={"wallet_address": wallet_address})
-    return response.get("data") or response
+    def set_wallet(self, wallet_address: str) -> Dict:
+        response = self.put("/accounts/wallet", json={"wallet_address": wallet_address})
+        return response.get("data") or response
 
     def get_history(self, limit: int = 50) -> list:
         return self.get(f"/accounts/history?limit={limit}").get("data", [])
