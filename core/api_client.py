@@ -126,7 +126,8 @@ class APIClient:
             return []
 
     def get_game(self, game_id: str) -> Dict:
-        return self.get(f"/games/{game_id}")["data"]
+        response = self.get(f"/games/{game_id}")
+        return response.get("data") or response
 
     def create_game(self, host_name: str = None, map_size: str = "medium",
                     entry_type: str = "free", max_agents: int = None) -> Dict:
@@ -135,23 +136,27 @@ class APIClient:
             payload["hostName"] = host_name
         if max_agents:
             payload["maxAgents"] = max_agents
-        return self.post("/games", json=payload)["data"]
+        response = self.post("/games", json=payload)
+        return response.get("data") or response
 
     def register_agent(self, game_id: str, agent_name: str) -> Dict:
-        return self.post(
+        response = self.post(
             f"/games/{game_id}/agents/register",
             json={"name": agent_name}
-        )["data"]
+        )
+        return response.get("data") or response
 
     def register_agent_fast(self, game_id: str, agent_name: str) -> Dict:
-        return self._request(
+        response = self._request(
             "POST", f"/games/{game_id}/agents/register",
             max_retries=1, timeout=5, retry_delay=0,
             json={"name": agent_name}
-        )["data"]
+        )
+        return response.get("data") or response
 
     def get_state(self, game_id: str, agent_id: str) -> Dict:
-        return self.get(f"/games/{game_id}/agents/{agent_id}/state")["data"]
+        response = self.get(f"/games/{game_id}/agents/{agent_id}/state")
+        return response.get("data") or response
 
     def take_action(self, game_id: str, agent_id: str,
                     action: Dict, thought: Dict = None) -> Dict:
