@@ -1,9 +1,8 @@
 import os
 import json
 
-# Multi-bot support — baca dari accounts_db.json
 def load_api_keys():
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "accounts_db.json")
+    db_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "accounts_db.json"))
     if os.path.exists(db_path):
         with open(db_path, "r") as f:
             db = json.load(f)
@@ -11,73 +10,21 @@ def load_api_keys():
     return [(os.environ.get("API_KEY", ""), os.environ.get("WALLET_ADDRESS", ""))]
 
 ALL_ACCOUNTS = load_api_keys()
+
 """
 ==============================================================================
 MOLTY ROYALE BOT - CONFIGURATION
 ==============================================================================
-Edit values here before running the bot.
 """
-
-# =============================================================================
-# API CREDENTIALS (REQUIRED)
-# =============================================================================
-API_KEY = os.environ.get("API_KEY", "mr_live_9OUIY0zGBJf64ebvLG4SE2Eq9JeEJYyT")
+API_KEY = ALL_ACCOUNTS[0][0] if ALL_ACCOUNTS else os.environ.get("API_KEY", "")
 BASE_URL = os.environ.get("BASE_URL", "https://cdn.moltyroyale.com/api")
-
-# =============================================================================
-# WALLET (REQUIRED FOR REWARDS)
-# =============================================================================
-WALLET_ADDRESS = os.environ.get("WALLET_ADDRESS", "0x256A6aCc0d2ea0eEC0A7d22Df5484B6aeE66497f")
-
-# =============================================================================
-# GAME PREFERENCES
-# =============================================================================
+WALLET_ADDRESS = ALL_ACCOUNTS[0][1] if ALL_ACCOUNTS else os.environ.get("WALLET_ADDRESS", "")
 PREFERRED_GAME_TYPE = "free"
-AUTO_CREATE_GAME = False         # If True, create game if none waiting
-GAME_MAP_SIZE = "medium"         # "medium" | "large" | "massive"
-
-# =============================================================================
-# SURVIVAL THRESHOLDS
-# =============================================================================
+AUTO_CREATE_GAME = False
+GAME_MAP_SIZE = "medium"
 HP_CRITICAL = 65
 HP_LOW = 45
-EP_MIN_ATTACK = 2                # Min EP required to attack
+EP_MIN_ATTACK = 2
 EP_REST_THRESHOLD = 3
-
-# =============================================================================
-# COMBAT DECISION THRESHOLDS
-# =============================================================================
 WIN_PROBABILITY_ATTACK = 0.65
-WIN_PROBABILITY_AGGRESSIVE = 0.80 # Use aggressive tactics if >= 80%
-
-# =============================================================================
-# LEARNING SYSTEM
-# =============================================================================
-LEARNING_ENABLED = True
-DATA_DIR = "data"                # Directory to store learning data
-MIN_GAMES_FOR_ML = 5             # Min games before ML model activates
-LEARNING_RATE = 0.1              # Learning rate for strategy updates
-
-# =============================================================================
-# REDIS (OPTIONAL)
-# =============================================================================
-REDIS_ENABLED = False
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-REDIS_DB = 0
-
-# =============================================================================
-# LOGGING
-# =============================================================================
-LOG_LEVEL = "DEBUG"
-LOG_TO_FILE = True
-LOG_FILE = "logs/bot.log"
-
-# =============================================================================
-# TIMING
-# =============================================================================
-TURN_INTERVAL = 60               # Seconds between turns (DO NOT CHANGE)
-POLL_INTERVAL_WAITING = 5        # Seconds between polls when waiting for game
-POLL_INTERVAL_DEAD = 60          # Seconds between polls when dead/idle
-ROOM_HUNT_INTERVAL = 2           # Aggressive polling interval when hunting for rooms
-HEARTBEAT_INTERVAL = 300         # Seconds between idle heartbeat checks (5 min)
+WIN
