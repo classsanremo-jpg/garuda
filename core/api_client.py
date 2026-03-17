@@ -132,7 +132,8 @@ class APIClient:
 
     def get_account(self) -> Dict:
         """Get current account info including active games."""
-        return self.get("/accounts/me")["data"]
+        response = self.get("/accounts/me")
+return response.get("data") or response
 
     def set_wallet(self, wallet_address: str) -> Dict:
         """Register EVM wallet for rewards."""
