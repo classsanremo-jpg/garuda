@@ -207,6 +207,7 @@ class GameLoop:
                 time.sleep(15)
 
     def find_and_join_game(self) -> bool:
+        import random
         from config.settings import ROOM_HUNT_INTERVAL
         import time as _time
         hunt_start = _time.time()
@@ -261,20 +262,23 @@ class GameLoop:
                         logger.error(f"Registration failed: {e}")
                         continue
             elif AUTO_CREATE_GAME:
-                logger.info("No waiting game found — creating one")
-                try:
-                    game = self.api.create_game(
-                        host_name=f"{self.agent_name}_Room",
-                        map_size=GAME_MAP_SIZE,
-                        entry_type=PREFERRED_GAME_TYPE
-                    )
-                    logger.info(f"Created game: {game['id']}")
-                    continue
-                except APIError as e:
-                    if e.code == "WAITING_GAME_EXISTS":
-                        logger.warning("Waiting game already exists, re-scanning")
+                if random.random() < 0.05:
+                    logger.info("No waiting game found — creating one")
+                    try:
+                        game = self.api.create_game(
+                            host_name=f"{self.agent_name}_Room",
+                            map_size=GAME_MAP_SIZE,
+                            entry_type=PREFERRED_GAME_TYPE
+                        )
+                        logger.info(f"Created game: {game['id']}")
                         continue
-                    logger.error(f"Create game failed: {e}")
+                    except APIError as e:
+                        if e.code == "WAITING_GAME_EXISTS":
+                            logger.warning("Waiting game already exists, re-scanning")
+                            continue
+                        logger.error(f"Create game failed: {e}")
+                else:
+                    logger.debug("Skipping room creation this attempt")
             else:
                 if attempt % 10 == 1:
                     logger.info(f"🔍 Hunting for {PREFERRED_GAME_TYPE} rooms... (attempt #{attempt}, {_time.time() - hunt_start:.0f}s elapsed)")
@@ -670,10 +674,6 @@ class GameLoop:
                 logger.info("Recovering and retrying in 30 seconds...")
                 time.sleep(30)
 
-
-# =============================================================================
-# ENTRY POINT
-# =============================================================================
 
 if __name__ == "__main__":
     import threading
