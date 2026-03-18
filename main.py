@@ -261,8 +261,9 @@ class GameLoop:
                     else:
                         logger.error(f"Registration failed: {e}")
                         continue
-            elif AUTO_CREATE_GAME:
-                if random.random() < 0.05:
+        elif AUTO_CREATE_GAME:
+    import random
+    if random.random() < 0.02:
                     logger.info("No waiting game found — creating one")
                     try:
                         game = self.api.create_game(
