@@ -691,6 +691,6 @@ if __name__ == "__main__":
             threads.append(t)
         for t in threads:
             t.start()
-            time.sleep(5)
+            time.sleep(2)
         for t in threads:
             t.join()
